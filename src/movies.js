@@ -2022,31 +2022,61 @@ function getAllDirectors(movies) {
 function howManyMovies(movies) {
   const dramamoviesbyss = movies.filter((item) => {
     const directedbyss = item.director === "Steven Spielberg";
-    const dramamovie = item.genre.indexOf('Drama') >= 0;
+    const dramamovie = item.genre.indexOf("Drama") >= 0;
 
     return directedbyss && dramamovie;
-});
+  });
   return dramamoviesbyss.length;
 }
 
 // Iteration 3: All scores average - Get the average of all scores with 2 decimals
 function scoresAverage(movies) {
-
-  
+  if (movies.length === 0) {
+    return 0;
+  }
+  const sumOfAllScores = movies.reduce((accumulator, item) => {
+    if (item.score) {
+      return accumulator + item.score;
+    } else {
+      return accumulator;
+    }
+  }, 0);
+  const avScore = sumOfAllScores / movies.length;
+  return round(avScore, 2);
 }
 
-// Iteration 4: Drama movies - Get the average of Drama Movies
+// Iteration 4: Drama movies - Get the average score of Drama Movies
 function dramaMoviesScore(movies) {
-  const dramaMovies = movies.map((dramascore) => {
-    return dramascore.genre === "drama" / arr.length;
+  const dramaMovies = movies.filter((item) => {
+    return item.genre.includes("Drama");
   });
+  const averagScoreOfDramaMovies = scoresAverage(dramaMovies);
+  return averagScoreOfDramaMovies;
 }
 
 // Iteration 5: Ordering by year - Order by year, ascending (in growing order)
-function orderByYear(movies) {}
+function orderByYear(movies) {
+  const orderByYearCopy = [...movies];
+  orderByYearCopy.sort((a, b) => {
+    if (a.year > b.year) {
+      return 1;
+    } else if (a.year < b.year) {
+      return -1;
+    } else {
+      return 0;
+    }
+  });
+  return orderByYearCopy;
+}
 
 // Iteration 6: Alphabetic Order - Order by title and print the first 20 titles
-function orderAlphabetically(movies) {}
+function orderAlphabetically(movies) {
+  const orderAlphabeticallyCopy = [...movies];
+  const names = orderAlphabeticallyCopy.map((item) => item.title);
+  names.sort((a, b) => a.localCompare(b));
+  const firstTwenty = names.slice(0, 20);
+  return firstTwenty;
+}
 
 // BONUS - Iteration 7: Time Format - Turn duration of the movies from hours to minutes
 function turnHoursToMinutes(movies) {}
